@@ -10,11 +10,11 @@ from pathlib import Path
 
 import httpx
 
-API_KEY        = os.environ.get("API_KEY", "")
-ATHLETE_ID     = os.environ.get("ATHLETE_ID", "i418663")
-API_BASE       = os.environ.get("INTERVALS_API_BASE_URL", "https://intervals.icu/api/v1")
+API_KEY        = os.environ.get("API_KEY", "").strip()
+ATHLETE_ID     = os.environ.get("ATHLETE_ID", "i418663").strip()
+API_BASE       = os.environ.get("INTERVALS_API_BASE_URL", "https://intervals.icu/api/v1").strip()
 GMAIL_USER     = "miki31877@gmail.com"
-GMAIL_APP_PWD  = os.environ.get("GMAIL_APP_PASSWORD", "")
+GMAIL_APP_PWD  = os.environ.get("GMAIL_APP_PASSWORD", "").strip()
 SEND_TO        = "miki31877@gmail.com"
 OUTPUT_PATH    = Path(__file__).parent / "weekly_running_plan.xlsx"
 
