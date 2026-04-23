@@ -11,7 +11,14 @@ from pathlib import Path
 
 from dotenv import load_dotenv
 
-load_dotenv(override=True)
+load_dotenv()  # load .env without overriding already-set env vars (e.g. from GitHub Actions)
+
+# Ensure required vars are set before importing intervals_mcp_server (config reads them at import time)
+if not os.environ.get("ATHLETE_ID"):
+    os.environ["ATHLETE_ID"] = "i418663"
+if not os.environ.get("INTERVALS_API_BASE_URL"):
+    os.environ["INTERVALS_API_BASE_URL"] = "https://intervals.icu/api/v1"
+
 sys.path.insert(0, str(Path(__file__).parent / "src"))
 
 import intervals_mcp_server.config as cfg
