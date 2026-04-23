@@ -1,0 +1,39 @@
+name: Weekly Running Plan
+
+on:
+  schedule:
+    - cron: "0 17 * * 6"  # Every Saturday 20:00 Israel time (17:00 UTC)
+  workflow_dispatch:       # Allow manual trigger from GitHub UI
+
+jobs:
+  generate-and-send:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
+
+      - name: Set up Python 3.12
+        run: uv python install 3.12
+
+      - name: Install dependencies
+        run: |
+          uv venv --python 3.12
+          source .venv/bin/activate
+          uv sync
+          uv pip install openpyxl
+
+      - name: Create .env file
+        run: |
+          echo "API_KEY=${{ secrets.INTERVALS_API_KEY }}" >> .env
+          echo "ATHLETE_ID=${{ secrets.ATHLETE_ID }}" >> .env
+          echo "INTERVALS_API_BASE_URL=https://intervals.icu/api/v1" >> .env
+          echo "GMAIL_APP_PASSWORD=${{ secrets.GMAIL_APP_PASSWORD }}" >> .env
+
+      - name: Generate plan and send email
+        run: |
+          source .venv/bin/activate
+          python generate_plan.py
