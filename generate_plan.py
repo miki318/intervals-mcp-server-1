@@ -29,6 +29,7 @@ async def fetch_runs():
     today = datetime.today().strftime("%Y-%m-%d")
     start = (datetime.today() - timedelta(days=120)).strftime("%Y-%m-%d")
     raw = await get_activities(start_date=start, end_date=today, limit=50, include_unnamed=False)
+    print("API response preview:", raw[:300])
 
     runs = []
     for block in raw.split("\n\nActivity:"):

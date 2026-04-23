@@ -26,14 +26,12 @@ jobs:
           uv sync
           uv pip install openpyxl
 
-      - name: Create .env file
-        run: |
-          echo "API_KEY=${{ secrets.INTERVALS_API_KEY }}" >> .env
-          echo "ATHLETE_ID=${{ secrets.ATHLETE_ID }}" >> .env
-          echo "INTERVALS_API_BASE_URL=https://intervals.icu/api/v1" >> .env
-          echo "GMAIL_APP_PASSWORD=${{ secrets.GMAIL_APP_PASSWORD }}" >> .env
-
       - name: Generate plan and send email
+        env:
+          API_KEY: ${{ secrets.INTERVALS_API_KEY }}
+          ATHLETE_ID: ${{ secrets.ATHLETE_ID }}
+          INTERVALS_API_BASE_URL: https://intervals.icu/api/v1
+          GMAIL_APP_PASSWORD: ${{ secrets.GMAIL_APP_PASSWORD }}
         run: |
           source .venv/bin/activate
           python generate_plan.py
